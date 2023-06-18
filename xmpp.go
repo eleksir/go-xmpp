@@ -1106,6 +1106,8 @@ func (c *Client) SendPresence(presence Presence) (n int, err error) {
 		}
 	}
 
+	buf = buf + ">"
+
 	// TODO: there may be optional tag "priority", but former presence type does not take this into account
 	//       so either we must follow std, change type xmpp.Presence and break backward compatibility
 	//       or leave it as-is and potentially break client software
