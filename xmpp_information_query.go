@@ -8,6 +8,7 @@ import (
 const IQTypeGet = "get"
 const IQTypeSet = "set"
 const IQTypeResult = "result"
+const IQTypeError = "error"
 
 func (c *Client) Discovery() (string, error) {
 	// use getCookie for a pseudo random id.
