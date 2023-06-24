@@ -959,6 +959,9 @@ func (c *Client) Recv() (stanza interface{}, err error) {
 						}
 
 						return DiscoResult{
+							ID:         v.ID,
+							From:       v.From,
+							To:         v.To,
 							Features:   clientFeaturesToReturn(disco.Features),
 							Identities: clientIdentitiesToReturn(disco.Identities),
 						}, nil
