@@ -794,6 +794,11 @@ type Presence struct {
 	Type   string
 	Show   string
 	Status string
+	Priority string
+	ID string
+	Affilation string
+	Role string
+	JID string
 }
 
 type IQ struct {
@@ -858,7 +863,18 @@ func (c *Client) Recv() (stanza interface{}, err error) {
 			}
 			return Chat{Type: "roster", Roster: r}, nil
 		case *clientPresence:
-			return Presence{v.From, v.To, v.Type, v.Show, v.Status}, nil
+			return Presence{
+				v.From,
+				v.To,
+				v.Type,
+				v.Show,
+				v.Status,
+				v.Priority,
+				v.ID,
+				v.X.Item.Affiliation,
+				v.X.Item.Role,
+				v.X.Item.Jid,
+			}, nil
 		case *clientIQ:
 			switch {
 			case v.Query.XMLName.Space == "urn:xmpp:ping":
@@ -1294,7 +1310,16 @@ type clientPresence struct {
 	To      string   `xml:"to,attr"`
 	Type    string   `xml:"type,attr"` // error, probe, subscribe, subscribed, unavailable, unsubscribe, unsubscribed
 	Lang    string   `xml:"lang,attr"`
-
+	X       struct {
+		Text  string `xml:",chardata"`
+		Xmlns string `xml:"xmlns,attr"`
+		Item  struct {
+			Text        string `xml:",chardata"`
+			Affiliation string `xml:"affiliation,attr"`
+			Jid         string `xml:"jid,attr"`
+			Role        string `xml:"role,attr"`
+		} `xml:"item"`
+	} `xml:"x"`
 	Show     string `xml:"show"`   // away, chat, dnd, xa
 	Status   string `xml:"status"` // sb []clientText
 	Priority string `xml:"priority,attr"`
