@@ -1,6 +1,5 @@
 version: "2"
 run:
-  go: "1.24"
   modules-download-mode: readonly
   tests: false
   allow-parallel-runners: true
@@ -41,7 +40,6 @@ linters:
     - nakedret
     - nilerr
     - nilnil
-    - nlreturn
     - noctx
     - nolintlint
     - nonamedreturns
@@ -56,7 +54,6 @@ linters:
     - unused
     - usestdlibvars
     - wastedassign
-    - wsl_v5
   settings:
     decorder:
       dec-order:
@@ -207,7 +204,7 @@ linters:
         disabled: true
       - name: empty-block
         disabled: true
-      # Allow wsl.v5 make dicesions about it, okay?
+      # Leading/trailing empty lines in blocks are handled by gofumpt.
       - name: empty-lines
         disabled: true
       # If you're planning to log contructed errors or show them via other methods capitalisation defined by
@@ -852,15 +849,6 @@ linters:
       # Suggest the use of constant.Kind.String().
       # Default: false
       constant-kind: true
-    wsl_v5:
-      allow-first-in-block: true
-      allow-whole-block: true
-      branch-max-lines: 2
-      case-max-lines: 2
-      default: all
-      disable:
-        - if
-        - err
   exclusions:
     generated: lax
     presets:
@@ -874,7 +862,7 @@ linters:
       - examples$
 formatters:
   enable:
-    - gofmt
+    - gofumpt
     - goimports
   exclusions:
     generated: lax
@@ -883,6 +871,9 @@ formatters:
       - builtin$
       - examples$
 issues:
+  # Only report issues introduced after this revision, so the existing code
+  # base can be fixed incrementally.
+  new-from-rev: ff68efc
   max-issues-per-linter: 0
   max-same-issues: 0
   uniq-by-line: false
